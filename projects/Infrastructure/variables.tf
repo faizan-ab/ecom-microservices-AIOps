@@ -35,7 +35,7 @@ variable "node_group_name" {
 
 variable "instance_types" {
   type        = list(string)
-  description = "Instance types for worker nodes (t3.medium, t3.large)"
+  description = "Instance types for worker nodes (c7i-flex.large, m7i-flex.large)"
 }
 
 variable "capacity_type" {
