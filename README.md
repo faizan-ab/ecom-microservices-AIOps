@@ -196,7 +196,7 @@ Full setup instructions (IAM roles, Lambda deployment, agent configuration, Stre
 ## 📷 Screenshots
 
 ### Application Live
-![App-DNS](Screenshots/app.png)
+![Application](Screenshots/app(1).png)
 
 ### CI-Pipeline Success
 ![CI-Pipeline](Screenshots/ci.png)
