@@ -193,6 +193,37 @@ Full setup instructions (IAM roles, Lambda deployment, agent configuration, Stre
 
 ---
 
+## 📷 Screenshots
+
+### Application Live
+![App-DNS](Screenshots/app.png)
+
+### CI-Pipeline Success
+![CI-Pipeline](Screenshots/ci.png)
+
+### Argo CD Deployment Status
+![Argo CD](Screenshots/argo.png)
+
+### ECR Dashboard
+![ECR](Screenshots/ecr.png)
+
+### Kubernetes Nodes
+![Nodes](Screenshots/nodes.png)
+
+### Kubernetes Pods-Boutique
+![Pods](Screenshots/pods-boutique.png)
+
+### Kubernetes Pods-Monitoring
+![Pods](Screenshots/pods-monitoring.png)
+
+### Prometheus
+![Prometheus](Screenshots/prom.png)
+
+### Grafana Dashboard
+![Grafana](Screenshots/grafana.png)
+
+---
+
 ## Engineering Notes & Known Limitations
 
 Documented here deliberately rather than left for a reviewer to discover:
