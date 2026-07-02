@@ -2,7 +2,7 @@
 
 A 7-service e-commerce application deployed on **AWS EKS** with a full GitOps delivery pipeline, observability stack, and an AI-powered SRE assistant that diagnoses production incidents using live logs, metrics, and cluster health data.
 
-[Architecture](#architecture) · [Highlights](#highlights) · [Tech Stack](#tech-stack) · [Quickstart](#quickstart) · [Engineering Notes](#engineering-notes--known-limitations) · [Troubleshooting Log](#real-incidents--troubleshooting)
+[Architecture](#architecture) · [Highlights](#highlights) · [Tech Stack](#tech-stack) · [Quickstart](#quickstart) · [AIOps Assistant — Kira](#aiops-assistant--kira) · [Engineering Notes](#engineering-notes--known-limitations) · [Troubleshooting Log](#real-incidents--troubleshooting) · [Docs](#documentation)
 
 ---
 
@@ -136,6 +136,8 @@ flowchart LR
 | GitOps | ArgoCD + Kustomize |
 | Observability | Prometheus, Grafana |
 | Log Aggregation | AWS Fluent Bit → CloudWatch Logs |
+| AIOps | AWS Bedrock Agent, AWS Lambda (Python) |
+| AI-Assisted Development | Claude Code + MCP servers (EKS, Terraform, AWS Pricing) |
 
 ---
 
@@ -162,6 +164,34 @@ For the complete path to AWS — Terraform provisioning, EKS deployment, ArgoCD 
 
 ---
 
+## AIOps Assistant — Kira
+
+Kira is a Bedrock Agent that behaves like a senior SRE during an incident: it never guesses, it pulls data first.
+
+```
+Engineer asks a question
+        │
+        ▼
+  Bedrock Agent (Kira)
+        │
+        ├── fetch_logs           → CloudWatch Logs
+        ├── fetch_metrics        → Prometheus
+        └── fetch_health         → EKS cluster / node / pod status
+        │
+        ▼
+Root cause + evidence + fix recommendation
+
+```
+
+
+Example questions it can answer:
+- *"Why are we seeing 503 errors in the last hour?"*
+- *"Is CPU usage high across the boutique services?"*
+- *"Are all pods healthy? Any restarts?"*
+
+Full setup instructions (IAM roles, Lambda deployment, agent configuration, Streamlit UI) are in [`projects/aiops-assistant/README.md`](projects/aiops-assistant/README.md).
+
+---
 
 ## Engineering Notes & Known Limitations
 
@@ -183,6 +213,19 @@ A sample from the full log at [`projects/Issues.md`](projects/Issues.md):
 > **Postgres silently skipped database initialization.** The init script that loads the schema dump only runs on an empty EBS volume — but EBS volumes ship with a `lost+found` directory by default, so Postgres saw a "non-empty" volume and skipped init entirely. The pod reported healthy while the application errored with "products page not found." Fixed with a dedicated DB-restore Job run after the Postgres pod is confirmed ready.
 
 See the full document for the EBS/IRSA permission issue and the Grafana metrics-scraping fix as well.
+
+---
+
+## Documentation
+
+| Doc | Covers |
+|---|---|
+| [`projects/README.md`](projects/README.md) | Full deployment guide: Docker → Terraform → EKS → CI/CD → ArgoCD → observability |
+| [`projects/aiops-assistant/README.md`](projects/aiops-assistant/README.md) | Kira setup: IAM, Lambda, Bedrock Agent, Streamlit UI |
+| [`projects/Issues.md`](projects/Issues.md) | Full troubleshooting log with root cause analysis |
+| [`docs/part1-system-design.md`](docs/part1-system-design.md) | System design principles applied in this architecture |
+| [`docs/part2-workflow.md`](docs/part2-workflow.md) | End-to-end request and deployment flow |
+| [`docs/claude-setup.md`](docs/claude-setup.md) | Claude Code + MCP server configuration used during development |
 
 ---
 
